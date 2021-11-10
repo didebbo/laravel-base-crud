@@ -14,6 +14,7 @@ class CreateComicsTable extends Migration
     public function up()
     {
         Schema::create('comics', function (Blueprint $table) {
+            //test
             $table->id();
             $table->string('title', 40);
             $table->text('description');
