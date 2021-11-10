@@ -6,8 +6,18 @@
 
 @section('main')
     <main>
+
         <div class="container">
-            <table class="table">
+            <div class="card mx-auto" style="width: 40em;">
+                <img src="{{ $comic['thumb'] }}" class="card-img-top" alt="..."
+                    style="height: 10em; object-fit: contain; object-position: left; margin: 1em;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $comic['title'] }}</h5>
+                    <p class="card-text">{{ $comic['description'] }}</p>
+                    <a href="#" class="btn btn-primary">Edit</a>
+                </div>
+            </div>
+            {{-- <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -32,7 +42,7 @@
                         <td>{{ $comic['type'] }}</td>
                     </tr>
                 </tbody>
-            </table>
+            </table> --}}
         </div>
 
     </main>
