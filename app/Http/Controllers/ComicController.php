@@ -8,6 +8,15 @@ use App\Comic;
 
 class ComicController extends Controller
 {
+    protected $validated = [
+        'title' => 'required|string|max:100',
+        'description' => 'required|string',
+        'thumb' => 'required|url|ends_with:.jpg',
+        'price' => 'required|numeric|max:999.99',
+        'series' => 'required|string|max:100',
+        'sale_date' => 'required|date',
+        'type' => 'required|string|max:40',
+    ];
     /**
      * Display a listing of the resource.
      *
@@ -36,16 +45,8 @@ class ComicController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        $newComic = new Comic();
-        $newComic->title = $data['title'];
-        $newComic->description = $data['description'];
-        $newComic->thumb = $data['thumb'];
-        $newComic->price = $data['price'];
-        $newComic->series = $data['series'];
-        $newComic->sale_date = $data['sale_date'];
-        $newComic->type = $data['type'];
-        $newComic->save();
+        $request->validate($this->validated);
+        $newComic = Comic::create($request->all());
         return redirect()->route('comics.show', $newComic['id']);
     }
 
@@ -55,9 +56,9 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Comic $comic)
     {
-        return view('comics.show', ['comic' => Comic::find($id)]);
+        return view('comics.show', ['comic' => $comic]);
     }
 
     /**
@@ -66,9 +67,9 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Comic $comic)
     {
-        //
+        return view('comics.edit', ['comic' => $comic]);
     }
 
     /**
@@ -78,9 +79,11 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Comic $comic)
     {
-        //
+        $request->validate($this->validated);
+        $comic->update($request->all());
+        return redirect()->route('comics.show', $comic['id']);
     }
 
     /**
